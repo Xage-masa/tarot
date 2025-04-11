@@ -58,6 +58,20 @@
     .dark h1, .dark h2, .dark p, .dark span {
       color: #ffc1e3;
     }
+    .dark select {
+  background-color: #281637;
+  color: #ffc1e3;
+  border: 1px solid #ffc1e3;
+}
+.dark .submit-button {
+  background-color: #281637;
+  color: #ffc1e3;
+  border-color: #ffc1e3;
+}
+.dark .toggle-button {
+  color: #ffc1e3;
+  border-color: #ffc1e3;
+}
 
     body.light {
       background-image: url('/static/bg_pastel.jpg');
@@ -135,7 +149,7 @@
 
   <h1 class="text-4xl mb-4 font-script">🔮 Волшебные предсказания от Дианочки</h1>
 
-  <form method="POST" action="/" class="flex gap-4 mb-6 items-center">
+  <form method="POST" action="/" class="flex flex-col sm:flex-row gap-4 mb-6 items-center">
     <label class="text-xl font-script">🎇 Тип расклада:</label>
     <select name="mode" class="rounded p-2">
       <option value="м">Общий</option>
