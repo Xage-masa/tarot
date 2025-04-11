@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="ru" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Волшебные предсказания от Дианы</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            script: ["'Marck Script'", "cursive"],
+          },
+          colors: {
+            pastel: "#fdf4f5",
+            darkbg: "#1a1025",
+            darkcard: "#281637"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
+
+    .tarot-card {
+      width: 160px;
+      height: auto;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .reversed {
+      transform: rotate(180deg);
+    }
+
+    .text-block {
+      background-color: #ffffff;
+      color: #333333;
+      font-size: 16px;
+    }
+
+    .dark .text-block {
+      background-color: #281637;
+      color: #ffc1e3;
+    }
+
+    .dark body {
+      background-color: #1a1025;
+      color: #ffc1e3;
+    }
+
+    .dark h1, .dark h2, .dark p, .dark span {
+      color: #ffc1e3;
+    }
+
+    body.light {
+      background-image: url('/static/bg_pastel.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    body.dark {
+      background-image: url('/static/bg_night.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .toggle-button, .submit-button {
+      border: 2px solid #fbb6ce;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .toggle-button:hover, .submit-button:hover {
+      background-color: #fbb6ce;
+      color: white;
+    }
+
+    .toggle-button:active, .submit-button:active {
+      background-color: #e09bbf;
+      color: white;
+    }
+
+    .toggle-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+    }
+
+    .bun-message {
+      font-family: 'Marck Script', cursive;
+      font-size: 18px;
+      margin-top: 30px;
+    }
+
+    .light .bun-message {
+      color: #8a4a65;
+    }
+
+    .dark .bun-message {
+      color: #ffc1e3;
+    }
+
+    .interpretation-heading {
+      font-family: 'Marck Script', cursive;
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  </style>
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const body = document.body;
+      html.classList.toggle('dark');
+      html.classList.toggle('light');
+      body.classList.toggle('dark');
+      body.classList.toggle('light');
+    }
+  </script>
+</head>
+
+<body class="light min-h-screen flex flex-col items-center justify-start p-4 bg-cover bg-center">
+
+  <button onclick="toggleTheme()" class="toggle-button font-script text-black bg-transparent">
+    🌙 Переключить стиль
+  </button>
+
+  <h1 class="text-4xl mb-4 font-script">🔮 Волшебные предсказания от Дианочки</h1>
+
+  <form method="POST" action="/" class="flex gap-4 mb-6 items-center">
+    <label class="text-xl font-script">🎇 Тип расклада:</label>
+    <select name="mode" class="rounded p-2">
+      <option value="м">Общий</option>
+      <option value="ж">Любовный</option>
+      <option value="д">На день</option>
+      <option value="дв">Друзья / Враги</option>
+      <option value="б">Будущее</option>
+      <option value="н">Да / Нет</option>
+    </select>
+    <button type="submit" class="submit-button bg-pink-200 px-4 py-2 rounded text-white font-script">
+      Получить расклад 🔮
+    </button>
+  </form>
+  
+<!-- Магическая фраза -->
+<p class="text-xl font-script my-2 text-center">✨ {{ spell_message }} ✨</p>
+
+  <!-- Карты -->
+  <div class="card-container flex flex-wrap justify-center mb-6">
+    {% for card in cards %}
+      <div class="flex flex-col items-center">
+        <img src="{{ url_for('static', filename='tarot/' + card['filename']) }}" class="tarot-card {% if card.reversed %}reversed{% endif %}">
+        <p class="text-center mt-2 italic font-script">{{ card['name'] }}</p>
+      </div>
+    {% endfor %}
+  </div>
+  
+  <!--* ✨ Hover анимация для карт *-->
+  <style>
+    /* --- АНИМАЦИЯ КАРТ --- */
+    .tarot-card {
+      width: 160px;
+      height: auto;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+  
+    .tarot-card:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 0 0 20px rgba(255, 192, 203, 0.7);
+    }
+  </style>
+  
+  <!-- Интерпретация -->
+  <div class="text-block p-6 rounded-lg max-w-3xl text-base leading-relaxed">
+    <p class="interpretation-heading">💫 Расшифровка:</p>
+    {% for paragraph in interpretation.split('\n') %}
+      {% if not loop.first or (loop.first and not paragraph.lower().startswith('конечно')) %}
+        <p class="mb-3">{{ paragraph }}</p>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Булочка -->
+  <p class="bun-message text-center">
+    {{ bun_message }}
+  </p>
+
+</body>
+</html>
