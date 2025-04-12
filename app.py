@@ -4,7 +4,6 @@ from utils.tarot_logic import select_cards, generate_interpretation, get_random_
 import random
 
 app = Flask(__name__)
-from flask import jsonify
 
 @app.route("/api/tarot", methods=["POST"])
 def api_tarot():
@@ -41,22 +40,6 @@ def get_spell_message():
         "Душа знает путь, а карты подсказывают направление 🔮",
         "Ты не одна — звёзды с тобой 🌙"
     ])
-
-from flask import jsonify
-
-@app.route("/api/tarot", methods=["GET"])
-def api_tarot():
-    mode = request.args.get("mode", "м")  # "м" — по умолчанию общий
-    cards = select_cards(TAROT_CARDS)
-    interpretation = generate_interpretation(cards, mode)
-
-    # Преобразуем в формат JSON
-    return jsonify({
-        "mode": mode,
-        "cards": cards,
-        "interpretation": interpretation
-    })
-
 
 if __name__ == "__main__":
     app.run(debug=True)
