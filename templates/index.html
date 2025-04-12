@@ -129,16 +129,48 @@
       margin-bottom: 1rem;
     }
   </style>
-  <script>
-    function toggleTheme() {
-      const html = document.documentElement;
-      const body = document.body;
-      html.classList.toggle('dark');
-      html.classList.toggle('light');
-      body.classList.toggle('dark');
-      body.classList.toggle('light');
+ <script>
+  function applySavedTheme() {
+    const savedTheme = sessionStorage.getItem('theme');
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (savedTheme === 'light') {
+      html.classList.remove('dark');
+      html.classList.add('light');
+      body.classList.remove('dark');
+      body.classList.add('light');
+    } else {
+      html.classList.add('dark');
+      html.classList.remove('light');
+      body.classList.add('dark');
+      body.classList.remove('light');
     }
-  </script>
+  }
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const body = document.body;
+    const isDark = html.classList.contains('dark');
+
+    if (isDark) {
+      html.classList.remove('dark');
+      html.classList.add('light');
+      body.classList.remove('dark');
+      body.classList.add('light');
+      sessionStorage.setItem('theme', 'light');
+    } else {
+      html.classList.add('dark');
+      html.classList.remove('light');
+      body.classList.add('dark');
+      body.classList.remove('light');
+      sessionStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Применить тему сразу при загрузке
+  window.addEventListener('DOMContentLoaded', applySavedTheme);
+</script>
 </head>
 
 <body class="light min-h-screen flex flex-col items-center justify-start p-4 bg-cover bg-center">
