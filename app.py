@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from utils.tarot_logic import select_cards, generate_interpretation, get_random_bun_message, TAROT_CARDS
 import random
 
@@ -15,7 +15,7 @@ def api_tarot():
         "cards": cards,
         "interpretation": interpretation
     }
-   
+    return jsonify(result)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
