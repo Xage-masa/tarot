@@ -1,7 +1,9 @@
-import requests, os
+import os
 from dotenv import load_dotenv
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackContext, CallbackQueryHandler
+import requests
+
 load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 API_URL = "https://tarotdiana.up.railway.app/api/tarot"
@@ -25,28 +27,14 @@ async def handle_mode_selection(update: Update, context: CallbackContext):
     response = requests.get(API_URL, params={"mode": mode})
     data = response.json()
 
+    cards_text = "\n".join([f"🔮 {card['name']}" for card in data["cards"]])
     interpretation = data["interpretation"]
-    cards = data["cards"]
 
-    images = []
-    for card in cards:
-        url = f"https://tarotdiana.up.railway.app/static/tarot/{card['filename']}"
-        if card["reversed"]:
-            url += "?reversed"  # просто для наглядности
-        images.append(url)
+    await query.message.reply_text(f"{cards_text}\n\n📝 Расшифровка:\n{interpretation}")
 
-    # Отправляем картинки
-    for url in images:
-        await query.message.reply_photo(url)
-
-    # Отправляем толкование
-    await query.message.reply_text(f"🧙‍♀️ Толкование:\n\n{interpretation}")
-
-if __name__ == "__main__":
-    app = ApplicationBuilder().token(BOT_TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(handle_mode_selection))
-
-    print("Бот запущен. Жми Ctrl+C чтобы остановить.")
-    app.run_polling()
+# 💡 Вот эта функция нужна app.py
+def run_bot():
+    application = ApplicationBuilder().token(BOT_TOKEN).build()
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(handle_mode_selection))
+    application.run_polling()
