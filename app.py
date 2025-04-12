@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from utils.tarot_logic import select_cards, generate_interpretation, get_random_bun_message, TAROT_CARDS
 import random
 
@@ -15,7 +15,7 @@ def api_tarot():
         "cards": cards,
         "interpretation": interpretation
     }
-    return jsonify(result)
+   
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -40,9 +40,6 @@ def get_spell_message():
         "Душа знает путь, а карты подсказывают направление 🔮",
         "Ты не одна — звёзды с тобой 🌙"
     ])
-from bot import run_bot
-import threading
-threading.Thread(target=run_bot, daemon=True).start()
 
 if __name__ == "__main__":
     app.run(debug=True)
