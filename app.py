@@ -104,6 +104,5 @@ def index():
         ui=ui   # <-- Эта переменная нужна для локализации текста
     )
 
-
 if __name__ == "__main__":
     app.run(debug=True)
