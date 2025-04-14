@@ -16,7 +16,13 @@ TEXTS = {
             "Душа знает путь, а карты подсказывают направление 🔮",
             "Ты не одна — звёзды с тобой 🌙"
         ],
-        "default_mode": "м"
+        "default_mode": "м",
+        "ui": {
+            "title": "🔮 Волшебные предсказания от Дианочки",
+            "toggle_theme": "Переключить стиль",
+            "get_layout": "Получить расклад 🔮",
+            "type_layout": "🎇 Тип расклада:"
+        }
     },
     "tr": {
         "spell_messages": [
@@ -26,7 +32,13 @@ TEXTS = {
             "Ruh yolunu biliyor, kartlar ise yönü gösteriyor 🔮",
             "Yalnız değilsin — yıldızlar seninle 🌙"
         ],
-        "default_mode": "m"
+        "default_mode": "m",
+        "ui": {
+            "title": "🔮 Diana'nın Büyülü Kehanetleri",
+            "toggle_theme": "Temayı Değiştir",
+            "get_layout": "Kart Açılımı Al 🔮",
+            "type_layout": "🎇 Açılım Tipi:"
+        }
     },
     "en": {
         "spell_messages": [
@@ -36,9 +48,16 @@ TEXTS = {
             "The soul knows the way, the cards reveal the path 🔮",
             "You are not alone — the stars are with you 🌙"
         ],
-        "default_mode": "m"
+        "default_mode": "m",
+        "ui": {
+            "title": "🔮 Magical Predictions by Diana",
+            "toggle_theme": "Toggle Theme",
+            "get_layout": "Get Spread 🔮",
+            "type_layout": "🎇 Spread Type:"
+        }
     }
 }
+
 
 @app.route("/set_language/<lang>")
 def set_language(lang):
@@ -61,20 +80,30 @@ def api_tarot():
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    # Берём язык из сессии
     lang = session.get('lang', 'ru')
+
+    # Добавляем получение перевода UI
+    ui = TEXTS[lang]["ui"]  
+
     mode = request.form.get("mode", TEXTS[lang]["default_mode"])
     cards = select_cards(TAROT_CARDS)
     interpretation = generate_interpretation(cards, mode)
     spell_message = random.choice(TEXTS[lang]['spell_messages'])
     bun_message = get_random_bun_message()
 
-    return render_template("index.html",
-                           cards=cards,
-                           interpretation=interpretation,
-                           spell_message=spell_message,
-                           bun_message=bun_message,
-                           mode=mode,
-                           lang=lang)
+    # Дополнительно передаём ui в шаблон
+    return render_template(
+        "index.html",
+        cards=cards,
+        interpretation=interpretation,
+        spell_message=spell_message,
+        bun_message=bun_message,
+        mode=mode,
+        lang=lang,
+        ui=ui   # <-- Эта переменная нужна для локализации текста
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)

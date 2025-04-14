@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Волшебные предсказания от Дианы</title>
+  <title>Волшебные предсказания от Дианочки</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -176,14 +176,24 @@
 <body class="light min-h-screen flex flex-col items-center justify-start p-4 bg-cover bg-center">
 
   <button onclick="toggleTheme()" class="toggle-button font-script text-black bg-transparent">
-    <span class="hidden sm:inline">🌙 Переключить стиль</span>
+    <span class="hidden sm:inline">🌙 {{ ui.toggle_theme }}</span>
     <span class="inline sm:hidden">🌙</span>
   </button>
+<!-- Селектор выбора языка -->
+<div class="absolute top-16 right-4">
+  <select id="lang-switch" class="rounded p-2" onchange="location.href='/set_language/' + this.value;">
+    <option value="ru" {% if lang == 'ru' %}selected{% endif %}>RU</option>
+    <option value="tr" {% if lang == 'tr' %}selected{% endif %}>TR</option>
+    <option value="en" {% if lang == 'en' %}selected{% endif %}>EN</option>
 
-  <h1 class="text-4xl mb-4 font-script">🔮 Волшебные предсказания от Дианочки</h1>
+  </select>
+</div>
+
+
+<h1 class="text-4xl mb-4 font-script">{{ ui.title }}</h1>
 
   <form method="POST" action="/" class="flex flex-col sm:flex-row gap-4 mb-6 items-center">
-    <label class="text-xl font-script">🎇 Тип расклада:</label>
+    <label class="text-xl font-script">{{ ui.type_layout }}</label>
     <select name="mode" class="rounded p-2">
       <option value="м">Общий</option>
       <option value="ж">Любовный</option>
@@ -193,14 +203,8 @@
       <option value="н">Да / Нет</option>
     </select>
 
-    <select name="lang" id="lang" class="rounded p-2">
-      <option value="ru" {% if lang == 'ru' %}selected{% endif %}>🇷🇺 RU</option>
-      <option value="tr" {% if lang == 'tr' %}selected{% endif %}>🇹🇷 TR</option>
-      <option value="en" {% if lang == 'en' %}selected{% endif %}>🇬🇧 EN</option>
-    </select>
-
     <button type="submit" class="submit-button bg-pink-200 px-4 py-2 rounded text-white font-script">
-      Получить расклад 🔮
+      {{ ui.get_layout }}
     </button>
     
   </form>
