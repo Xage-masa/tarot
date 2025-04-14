@@ -192,9 +192,17 @@
       <option value="б">Будущее</option>
       <option value="н">Да / Нет</option>
     </select>
+
+    <select name="lang" id="lang" class="rounded p-2">
+      <option value="ru" {% if lang == 'ru' %}selected{% endif %}>🇷🇺 RU</option>
+      <option value="tr" {% if lang == 'tr' %}selected{% endif %}>🇹🇷 TR</option>
+      <option value="en" {% if lang == 'en' %}selected{% endif %}>🇬🇧 EN</option>
+    </select>
+
     <button type="submit" class="submit-button bg-pink-200 px-4 py-2 rounded text-white font-script">
       Получить расклад 🔮
     </button>
+    
   </form>
   
 <!-- Магическая фраза -->

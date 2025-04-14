@@ -1,6 +1,9 @@
 import random
 from openai import OpenAI
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # 🔮 Полная колода карт
 TAROT_CARDS = [
     "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
@@ -44,25 +47,34 @@ def generate_interpretation(cards, mode):
         for card in cards
     ])
 
-    prompt = (
-        "Ты - близкая волшебная подруга, которая делает " + mode_text + ".\n"
-        "Вот карты: " + description + "\n"
-        "Объясни расклад доброжелательно, с юмором, без использования пола, без 'дорогая' и 'друг'. "
-        "Можно обращаться 'солнышко', 'заечка', 'звёздочка', 'булочка' и подобные нейтральные ласковые слова. "
-        "Не используй 'вы' или 'обращайтесь за помощью'. Напиши, как будто рассказываешь подруге или другу лично."
-    )
+def generate_interpretation(cards, mode, lang="ru"):
+    lang_prompts = {
+        "ru": "Ты — близкая волшебная подруга, которая делает расклад на тему: " + mode + ".\n"
+              "Вот карты: " + ", ".join([card["name"] for card in cards]) + "\n"
+              "Объясни расклад доброжелательно, с юмором, без использования пола, без 'дорогая' и 'друг'. "
+              "Можно обращаться 'солнышко', 'заечка', 'звёздочка', 'булочка' и подобные нейтральные ласковые слова. "
+              "Не используй 'вы' или 'обращайтесь за помощью'. Напиши, как будто рассказываешь подруге или другу лично.",
+        "en": "You are a wise and slightly humorous tarot assistant. Help the user understand what the three tarot cards want to say. "
+              "Speak clearly and kindly. Avoid clichés. Cards: " + ", ".join([card["name"] for card in cards]),
+        "tr": "Sen bilge ve hafif esprili bir tarot yardımcısısın. Üç tarot kartının ne söylemek istediğini anlamasına yardım et. "
+              "Nazik ve açık konuş. Kalıplaşmış ifadelerden kaçın. Kartlar: " + ", ".join([card["name"] for card in cards])
+    }
+
+    prompt = lang_prompts.get(lang, lang_prompts["ru"])
 
     client = OpenAI()
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Ты - добрая волшебная подруга, которая гадает на Таро. Рассказывай нежно, с юмором и с любовью. Говори на ты, но избегай гендерных обращений."},
+            {"role": "system", "content": "Ты — добрая волшебная подруга, которая гадает на Таро. Рассказывай нежно, с юмором и с любовью. Говори на ты, но избегай гендерных обращений."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.9
     )
 
-    return response.choices[0].message.content
+    return response.choices[0].message.content.strip()
+
+
 
 def get_random_bun_message():
     messages = [
