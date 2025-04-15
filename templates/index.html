@@ -195,13 +195,11 @@
   <form method="POST" action="/" class="flex flex-col sm:flex-row gap-4 mb-6 items-center">
     <label class="text-xl font-script">{{ ui.type_layout }}</label>
     <select name="mode" class="rounded p-2">
-      <option value="м">Общий</option>
-      <option value="ж">Любовный</option>
-      <option value="д">На день</option>
-      <option value="дв">Друзья / Враги</option>
-      <option value="б">Будущее</option>
-      <option value="н">Да / Нет</option>
+      {% for key, label in spread_types.items() %}
+        <option value="{{ key }}" {% if key == mode %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
     </select>
+    
 
     <button type="submit" class="submit-button bg-pink-200 px-4 py-2 rounded text-white font-script">
       {{ ui.get_layout }}
@@ -242,7 +240,7 @@
   
   <!-- Интерпретация -->
   <div class="text-block p-6 rounded-lg max-w-3xl text-base leading-relaxed">
-    <p class="interpretation-heading">💫 Расшифровка:</p>
+    <p class="interpretation-heading">{{ ui.interpretation_heading }}</p>
     {% for paragraph in interpretation.split('\n') %}
       {% if not loop.first or (loop.first and not paragraph.lower().startswith('конечно')) %}
         <p class="mb-3">{{ paragraph }}</p>

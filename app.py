@@ -14,8 +14,9 @@ TEXTS = {
             "title": "🔮 Волшебные предсказания от Дианочки",
             "toggle_theme": "Переключить стиль",
             "get_layout": "Получить расклад 🔮",
-            "type_layout": "🎇 Тип расклада:"
-        },
+            "type_layout": "🎇 Тип расклада:",
+            "interpretation_heading": "💫 Расшифровка:"
+            },
         "spell_messages": [
             "Ты — свет в этом мире 🌟",
             "Каждая карта — шаг к себе ✨",
@@ -70,7 +71,8 @@ TEXTS = {
             "title": "🔮 Diana'nın Büyülü Kehanetleri",
             "toggle_theme": "Temayı Değiştir",
             "get_layout": "Kart Açılımı Al 🔮",
-            "type_layout": "🎇 Açılım Tipi:"
+            "type_layout": "🎇 Açılım Tipi:",
+            "interpretation_heading": "💫 Yorum:"
         },
         "spell_messages": [
             "Sen bu dünyada bir ışıksın 🌟",
@@ -119,14 +121,16 @@ TEXTS = {
                 "🎲 Hayat bir oyun, zar senin elinde."
             ]
         }
-    },
+    }
+        ,
     "en": {
         "default_mode": "m",
         "ui": {
             "title": "🔮 Magical Predictions by Diana",
             "toggle_theme": "Toggle Theme",
             "get_layout": "Get Spread 🔮",
-            "type_layout": "🎇 Spread Type:"
+            "type_layout": "🎇 Spread Type:",
+            "interpretation_heading": "💫 Interpretation:"
         },
         "spell_messages": [
             "You are a light in this world 🌟",
@@ -177,6 +181,7 @@ TEXTS = {
         }
     }
 }
+
 
 
 @app.route("/set_language/<lang>")
