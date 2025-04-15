@@ -209,7 +209,9 @@ def index():
     lang = session.get('lang', 'ru')
 
     # Добавляем получение перевода UI
-    ui = TEXTS[lang]["ui"]  
+    ui = TEXTS[lang]["ui"] 
+    spread_types = TEXTS[lang]["spread_types"]
+ 
 
     mode = request.form.get("mode", TEXTS[lang]["default_mode"])
     cards = select_cards(TAROT_CARDS)
@@ -220,15 +222,17 @@ def index():
 
     # Дополнительно передаём ui в шаблон
     return render_template(
-        "index.html",
-        cards=cards,
-        interpretation=interpretation,
-        spell_message=spell_message,
-        bun_message=bun_message,
-        mode=mode,
-        lang=lang,
-        ui=ui   # <-- Эта переменная нужна для локализации текста
-    )
+    "index.html",
+    cards=cards,
+    interpretation=interpretation,
+    spell_message=spell_message,
+    bun_message=bun_message,
+    mode=mode,
+    lang=lang,
+    ui=ui,
+    spread_types=spread_types 
+)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
