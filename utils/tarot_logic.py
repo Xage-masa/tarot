@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-# 🔮 Полная колода карт
+
 TAROT_CARDS = [
     "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
     "The Lovers", "The Chariot", "Strength", "The Hermit", "Wheel of Fortune",
@@ -33,20 +33,6 @@ def select_cards(card_list=TAROT_CARDS, count=3):
         result.append({"name": card, "reversed": reversed_card, "filename": filename})
     return result
 
-def generate_interpretation(cards, mode):
-    mode_text = {
-        "ж": "любовный расклад",
-        "м": "общий расклад",
-        "совет": "расклад на совет",
-        "дух": "расклад на внутренний рост",
-        "кризис": "расклад на сложную ситуацию"
-    }.get(mode, "расклад")
-
-    description = "\n".join([
-        f"{card['name']} (перевёрнута)" if card['reversed'] else f"{card['name']}"
-        for card in cards
-    ])
-
 def generate_interpretation(cards, mode, lang="ru"):
     lang_prompts = {
         "ru": "Ты — близкая волшебная подруга, которая делает расклад на тему: " + mode + ".\n"
@@ -54,9 +40,9 @@ def generate_interpretation(cards, mode, lang="ru"):
               "Объясни расклад доброжелательно, с юмором, без использования пола, без 'дорогая' и 'друг'. "
               "Можно обращаться 'солнышко', 'заечка', 'звёздочка', 'булочка' и подобные нейтральные ласковые слова. "
               "Не используй 'вы' или 'обращайтесь за помощью'. Напиши, как будто рассказываешь подруге или другу лично.",
-        "en": "You are a wise and slightly humorous tarot assistant. Help the user understand what the three tarot cards want to say. "
+        "en": "You are a wise and slightly humorous tarot assistant. Help the user understand what these tarot cards want to say. "
               "Speak clearly and kindly. Avoid clichés. Cards: " + ", ".join([card["name"] for card in cards]),
-        "tr": "Sen bilge ve hafif esprili bir tarot yardımcısısın. Üç tarot kartının ne söylemek istediğini anlamasına yardım et. "
+        "tr": "Sen bilge ve hafif esprili bir tarot yardımcısısın. Bu tarot kartlarının ne söylemek istediğini anlamasına yardım et. "
               "Nazik ve açık konuş. Kalıplaşmış ifadelerden kaçın. Kartlar: " + ", ".join([card["name"] for card in cards])
     }
 
@@ -74,16 +60,4 @@ def generate_interpretation(cards, mode, lang="ru"):
 
     return response.choices[0].message.content.strip()
 
-
-
-def get_random_bun_message():
-    messages = [
-        "🔮 Сегодня звезды на твоей стороне. Доверься интуиции!",
-        "✨ Даже булочка знает: впереди волшебные перемены.",
-        "🌠 Ты сильнее, чем кажется — магия уже внутри тебя.",
-        "🌌 Оглянись — мир полон чудес, и одно из них направляется к тебе.",
-        "🪄 Пусть этот день принесет тебе вдохновение и уверенность."
-    ]
-    return random.choice(messages)
-
-__all__ = ['TAROT_CARDS', 'select_cards', 'generate_interpretation', 'get_random_bun_message']
+__all__ = ['TAROT_CARDS', 'select_cards', 'generate_interpretation']
