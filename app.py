@@ -211,7 +211,8 @@ def api_tarot():
     lang = session.get('lang', 'ru')
     data = request.json or {}
     mode = data.get("mode", TEXTS[lang]["default_mode"])
-    cards = select_cards(TAROT_CARDS)
+    count = TEXTS[lang]["spread_counts"].get(mode, 3)
+    cards = select_cards(TAROT_CARDS, count)
     interpretation = generate_interpretation(cards, mode, lang)
     result = {
         "cards": cards,
