@@ -230,7 +230,21 @@ def index():
  
 
     mode = request.form.get("mode", TEXTS[lang]["default_mode"])
-    cards = select_cards(TAROT_CARDS)
+    spread_card_counts = {
+    "м": 3,
+    "ж": 3,
+    "д": 3,
+    "дв": 3,
+    "б": 3,
+    "н": 3,
+    "кр": 5,
+    "пт": 5,
+    "л5": 5,
+    "вн": 5,
+    "сд": 5
+}
+    card_count = spread_card_counts.get(mode, 3)
+    cards = select_cards(TAROT_CARDS, card_count)
     interpretation = generate_interpretation(cards, mode, lang)
     spell_message = random.choice(TEXTS[lang]['spell_messages'])
     bun_pool = TEXTS[lang]["bun_messages"].get(mode, TEXTS[lang]["bun_messages"].get("м", []))
