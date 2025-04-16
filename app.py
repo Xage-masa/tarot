@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from utils.tarot_logic import select_cards, generate_interpretation, get_random_bun_message, TAROT_CARDS
+from utils.tarot_logic import select_cards, generate_interpretation, TAROT_CARDS
 import random
 
 app = Flask(__name__)
