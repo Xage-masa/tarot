@@ -211,8 +211,8 @@ def api_tarot():
     lang = session.get('lang', 'ru')
     data = request.json or {}
     mode = data.get("mode", TEXTS[lang]["default_mode"])
-    count = TEXTS[lang]["spread_counts"].get(mode, 3)
-    cards = select_cards(TAROT_CARDS, count)
+    count = TEXTS[lang]["spread_counts"].get(mode, 3)  # ← определяем количество карт (для бота)
+    cards = select_cards(TAROT_CARDS, count=count)     # ← передаем нужное количество(для бота)
     interpretation = generate_interpretation(cards, mode, lang)
     result = {
         "cards": cards,
